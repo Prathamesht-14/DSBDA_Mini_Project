@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Advanced Sales Analysis{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="chart-container">
+            <h5 class="fw-bold mb-4">Filters</h5>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Region</label>
+                    <select class="form-select">
+                        <option value="all">All Regions</option>
+                        <option>West</option>
+                        <option>East</option>
+                        <option>Central</option>
+                        <option>South</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select">
+                        <option value="all">All Categories</option>
+                        <option>Furniture</option>
+                        <option>Office Supplies</option>
+                        <option>Technology</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date Range</label>
+                    <input type="month" class="form-control">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary w-100"><i class="fas fa-filter me-2"></i> Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12">
+        <div class="chart-container">
+            <h5 class="fw-bold mb-4">Detailed Monthly Trend</h5>
+            <div style="position: relative; height: 300px;">
+                <canvas id="analysisMonthlyTrend"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h5 class="fw-bold mb-4">Regional Distribution</h5>
+            <div style="position: relative; height: 300px;">
+                <canvas id="analysisRegionChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h5 class="fw-bold mb-4">Category Breakdown</h5>
+            <div style="position: relative; height: 300px;">
+                <canvas id="analysisCategoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
