@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from werkzeug.utils import secure_filename
 from utils.data_loader import load_data, preprocess_data
 from utils.analytics import generate_kpis, get_sales_by_region, get_sales_by_category, get_profit_by_segment, get_monthly_sales_trend
-from utils.predictor import load_model, predict
+from utils.predictor import load_model, predict, train_model
+import json
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'data'
@@ -17,6 +18,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.config['DF'] = None
 
 MODEL_PATH = 'model/sales_model.pkl'
+METRICS_PATH = 'model/metrics.json'
 
 @app.route('/')
 def dashboard():
@@ -53,6 +55,9 @@ def upload():
             df = load_data(filepath)
             df = preprocess_data(df)
             app.config['DF'] = df
+            
+            # Train the model on new data
+            train_model(df, MODEL_PATH, METRICS_PATH)
             
             return redirect(url_for('dashboard'))
     return render_template('upload.html')
@@ -101,11 +106,15 @@ def predict_sales():
 
 @app.route('/model')
 def model_metrics():
-    # Mock metrics for now
-    metrics = {
-        'r2_score': 0.85,
-        'mae': 120.5
-    }
+    # Load metrics from file or use fallback
+    if os.path.exists(METRICS_PATH):
+        with open(METRICS_PATH, 'r') as f:
+            metrics = json.load(f)
+    else:
+        metrics = {
+            'r2_score': 'N/A',
+            'mae': 'N/A'
+        }
     return render_template('model_metrics.html', metrics=metrics)
 
 if __name__ == '__main__':

@@ -26,9 +26,17 @@
             <h5 class="fw-bold mb-4">Actual vs Predicted Sales Performance</h5>
             <!-- Simple mock visual for prediction vs actual -->
             <div class="progress mb-3" style="height: 30px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">Accuracy 85%</div>
+                {% if metrics.r2_score != 'N/A' %}
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ metrics.r2_score * 100 }}%" aria-valuenow="{{ metrics.r2_score * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                    Accuracy {{ (metrics.r2_score * 100)|round(2) }}%
+                </div>
+                {% else %}
+                <div class="progress-bar bg-secondary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    No Data
+                </div>
+                {% endif %}
             </div>
-            <p class="text-muted">The machine learning model (Linear Regression / XGBoost) explains 85% of the variance in sales data.</p>
+            <p class="text-muted">The machine learning model (Linear Regression) explains {{ (metrics.r2_score * 100)|round(2) if metrics.r2_score != 'N/A' else '0' }}% of the variance in sales data based on the current dataset.</p>
         </div>
     </div>
 </div>
